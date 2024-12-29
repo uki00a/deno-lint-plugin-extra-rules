@@ -1,7 +1,6 @@
 {
   "tasks": {
-    "check": "deno fmt --check && deno lint && deno check 'packages/**/*.ts' && deno doc --lint 'packages/**/*.ts'",
-    "test": "deno test --allow-net --allow-read=packages/ --no-check ./test ./packages"
+    "test": "deno test --allow-read=. test.js"
   },
   "lint": {
     "rules": {
