@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        uses: denoland/setup-deno@main
+      - uses: denoland/setup-deno@v2
         with:
           deno-version: 5194222e02d54158c47240ef78f7d3379a274eeb
       - name: Run linters
