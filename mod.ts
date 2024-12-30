@@ -1,6 +1,7 @@
 import { createPlugin } from "./plugin.ts";
-// deno-lint-ignore no-console
+
 const plugin = createPlugin({
+  // deno-lint-ignore no-console
   onError: console.error,
 });
 export default plugin;
