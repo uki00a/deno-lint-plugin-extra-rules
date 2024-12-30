@@ -1,8 +1,12 @@
 import { createPlugin } from "./plugin.ts";
 
-async function runLintPlugin(plugin, filename) {
+async function runLintPlugin(
+  plugin: unknown,
+  filename: string,
+): Promise<unknown> {
   const path = `./testdata/${filename}`;
   const content = await Deno.readTextFile(path);
+  // @ts-expect-error This is an internal API
   return Deno[Deno.internal].runLintPlugin(
     plugin,
     path,
@@ -12,7 +16,7 @@ async function runLintPlugin(plugin, filename) {
 
 Deno.test("plugin", async (t) => {
   await t.step("no-env-to-object", async () => {
-    let error;
+    let error: unknown | undefined;
     const plugin = createPlugin({
       onError: (_error) => {
         if (error) throw new Error("Unexpected state");

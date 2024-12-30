@@ -10,9 +10,12 @@ export function createPlugin({
     name: "deno-lint-plugin-extra-rules",
     rules: {
       "no-env-to-object": {
-        create: (_ctx) => {
+        create: (/* ctx: RuleContext */) => {
           const visitor = {
-            "CallExpression > MemberExpression": (node) => {
+            "CallExpression > MemberExpression": (
+              // deno-lint-ignore no-explicit-any -- Replace `any` with an official type
+              node: any,
+            ) => {
               if (node.object.type !== "MemberExpression") return;
               if (node.property.type !== "Identifier") return;
               if (node.property.name !== "toObject") return;
