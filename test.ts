@@ -1,4 +1,4 @@
-import { createPlugin } from "./plugin.js";
+import { createPlugin } from "./plugin.ts";
 
 async function runLintPlugin(plugin, filename) {
   const path = `./testdata/${filename}`;
@@ -13,9 +13,11 @@ async function runLintPlugin(plugin, filename) {
 Deno.test("plugin", async (t) => {
   await t.step("no-env-to-object", async () => {
     let error;
-    const plugin = createPlugin((_error) => {
-      if (error) throw new Error("Unexpected state");
-      error = _error;
+    const plugin = createPlugin({
+      onError: (_error) => {
+        if (error) throw new Error("Unexpected state");
+        error = _error;
+      },
     });
     await runLintPlugin(plugin, "no-env-to-object.js");
     if (

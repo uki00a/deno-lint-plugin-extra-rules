@@ -1,4 +1,11 @@
-export function createPlugin(onError) {
+interface CreatePluginOptions {
+  // TODO: This should be removed when `RuleContext` supports error reporting.
+  onError: (error: unknown) => unknown;
+}
+
+export function createPlugin({
+  onError,
+}: CreatePluginOptions) {
   const plugin = {
     name: "deno-lint-plugin-extra-rules",
     rules: {
