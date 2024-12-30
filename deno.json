@@ -1,7 +1,7 @@
 {
   "tasks": {
     "check": "deno fmt --check && deno lint",
-    "test": "deno test --allow-read=. test.js"
+    "test": "deno test --allow-read=. test.ts"
   },
   "lint": {
     "rules": {
