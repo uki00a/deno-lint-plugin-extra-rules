@@ -1,4 +1,9 @@
 {
+  "name": "@uki00a/deno-lint-plugin-extra-rules",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./mod.ts"
+  },
   "tasks": {
     "check": "deno fmt --check && deno lint",
     "test": "deno test --allow-read=. test.ts"
