@@ -21,7 +21,7 @@ Deno.test("plugin", async (t) => {
     const diagnostics = await runLintPlugin(plugin, "no-env-to-object.js");
     assertObjectMatch(diagnostics[0], {
       id: "deno-lint-plugin-extra-rules/no-env-to-object",
-      message: "`Deno.env.toObject()` requires full `--allow-env`",
+      message: "`Deno.env.toObject()` requires full `--allow-env` permission.",
     });
     assertStrictEquals(diagnostics.length, 1);
   });

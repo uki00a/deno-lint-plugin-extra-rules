@@ -19,7 +19,8 @@ export function createPlugin(): Deno.lint.Plugin {
 
               ctx.report({
                 node,
-                message: "`Deno.env.toObject()` requires full `--allow-env`",
+                message:
+                  "`Deno.env.toObject()` requires full `--allow-env` permission.",
                 hint: "Recommended to use `Deno.env.get()` or similar.",
               });
             },
