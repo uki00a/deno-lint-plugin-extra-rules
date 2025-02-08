@@ -1,4 +1,4 @@
 import { createPlugin } from "./plugin.ts";
 
-const plugin = createPlugin();
+const plugin: Deno.lint.Plugin = createPlugin();
 export default plugin;
