@@ -1,20 +1,15 @@
 interface CreatePluginOptions {
-  // TODO: This should be removed when `RuleContext` supports error reporting.
-  onError: (error: unknown) => unknown;
 }
 
-export function createPlugin({
-  onError,
-}: CreatePluginOptions) {
-  const plugin = {
+export function createPlugin({}: CreatePluginOptions = {}): Deno.lint.Plugin {
+  const plugin: Deno.lint.Plugin = {
     name: "deno-lint-plugin-extra-rules",
     rules: {
       "no-env-to-object": {
-        create: (/* ctx: RuleContext */) => {
+        create: (ctx) => {
           const visitor = {
             "CallExpression > MemberExpression": (
-              // deno-lint-ignore no-explicit-any -- Replace `any` with an official type
-              node: any,
+              node: Deno.lint.MemberExpression,
             ) => {
               if (node.object.type !== "MemberExpression") return;
               if (node.property.type !== "Identifier") return;
@@ -25,7 +20,11 @@ export function createPlugin({
               if (child.object.name !== "Deno") return;
               if (child.property.type !== "Identifier") return;
 
-              onError(new Error("Deno.env.toObject found"));
+              ctx.report({
+                node,
+                message: "`Deno.env.toObject()` requires full `--allow-env`",
+                hint: "Recommended to use `Deno.env.get()` or similar.",
+              });
             },
           };
           return visitor;

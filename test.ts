@@ -1,13 +1,14 @@
+import { assertObjectMatch } from "@std/assert/object-match";
+import { assertStrictEquals } from "@std/assert/strict-equals";
 import { createPlugin } from "./plugin.ts";
 
 async function runLintPlugin(
-  plugin: unknown,
+  plugin: Deno.lint.Plugin,
   filename: string,
-): Promise<unknown> {
+): Promise<Array<Deno.lint.Diagnostic>> {
   const path = `./testdata/${filename}`;
   const content = await Deno.readTextFile(path);
-  // @ts-expect-error This is an internal API
-  return Deno[Deno.internal].runLintPlugin(
+  return Deno.lint.runPlugin(
     plugin,
     path,
     content,
@@ -17,17 +18,12 @@ async function runLintPlugin(
 Deno.test("plugin", async (t) => {
   await t.step("no-env-to-object", async () => {
     let error: unknown | undefined;
-    const plugin = createPlugin({
-      onError: (_error) => {
-        if (error) throw new Error("Unexpected state");
-        error = _error;
-      },
+    const plugin = createPlugin();
+    const diagnostics = await runLintPlugin(plugin, "no-env-to-object.js");
+    assertObjectMatch(diagnostics[0], {
+      id: "deno-lint-plugin-extra-rules/no-env-to-object",
+      message: "`Deno.env.toObject()` requires full `--allow-env`",
     });
-    await runLintPlugin(plugin, "no-env-to-object.js");
-    if (
-      !(error instanceof Error) || error.message !== "Deno.env.toObject found"
-    ) {
-      throw new Error("An unexpected error dectected");
-    }
+    assertStrictEquals(diagnostics.length, 1);
   });
 });
