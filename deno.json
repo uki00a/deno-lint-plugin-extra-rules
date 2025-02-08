@@ -15,7 +15,16 @@
       ]
     }
   },
-  "exclude": ["./tmp"],
+  "exclude": [
+    "./tmp",
+    "./**/*_test.ts",
+    "./**/test.ts"
+  ],
+  "publish": {
+    "exclude": [
+      "./testdata"
+    ]
+  },
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.11"
   }
