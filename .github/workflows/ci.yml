@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: 2.1.5
+          deno-version: e94581d272d842ac9d2da9cab8bc9edf4c3170e6
       - name: Run linters
         run:
           deno task check
