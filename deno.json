@@ -15,16 +15,14 @@
       ]
     }
   },
-  "exclude": [
-    "./tmp",
-    "./**/*_test.ts",
-    "./**/test.ts",
-    ".github/",
-    "./.*"
-  ],
+  "exclude": ["./tmp"],
   "publish": {
     "exclude": [
-      "./testdata"
+      "./testdata",
+      "./**/*_test.ts",
+      "./**/test.ts",
+      ".github/",
+      "./.*"
     ]
   },
   "imports": {
