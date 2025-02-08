@@ -17,7 +17,6 @@ async function runLintPlugin(
 
 Deno.test("plugin", async (t) => {
   await t.step("no-env-to-object", async () => {
-    let error: unknown | undefined;
     const plugin = createPlugin();
     const diagnostics = await runLintPlugin(plugin, "no-env-to-object.js");
     assertObjectMatch(diagnostics[0], {

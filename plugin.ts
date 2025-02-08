@@ -1,7 +1,4 @@
-interface CreatePluginOptions {
-}
-
-export function createPlugin({}: CreatePluginOptions = {}): Deno.lint.Plugin {
+export function createPlugin(): Deno.lint.Plugin {
   const plugin: Deno.lint.Plugin = {
     name: "deno-lint-plugin-extra-rules",
     rules: {
