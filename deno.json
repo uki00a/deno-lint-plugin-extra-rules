@@ -18,7 +18,9 @@
   "exclude": [
     "./tmp",
     "./**/*_test.ts",
-    "./**/test.ts"
+    "./**/test.ts",
+    ".github/",
+    "./.*"
   ],
   "publish": {
     "exclude": [
