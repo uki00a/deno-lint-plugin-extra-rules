@@ -11,9 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Get Deno version
+        run: |
+          echo "DENO_VERSION=$(cat .denov)" >> $GITHUB_ENV
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: e94581d272d842ac9d2da9cab8bc9edf4c3170e6
+          deno-version: ${{ env.DENO_VERSION }}
       - name: Run linters
         run:
           deno task check
