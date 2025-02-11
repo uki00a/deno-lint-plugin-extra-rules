@@ -18,6 +18,7 @@ Add the following to `deno.json`:
 
 ## Rules
 
-|        Name        |                Description                |
-| :----------------: | :---------------------------------------: |
-| `no-env-to-object` | Disallow the use of `Deno.env.toObject()` |
+|         Name         |                Description                |
+| :------------------: | :---------------------------------------: |
+|  `no-env-to-object`  | Disallow the use of `Deno.env.toObject()` |
+| `no-test-sanitizers` |   Disallow the use of test sanitiziers    |
