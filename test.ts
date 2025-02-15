@@ -20,14 +20,39 @@ async function runLintPlugin(
   );
 }
 
-Deno.test("no-env-to-object", async () => {
+Deno.test("no-env-to-object", async (t) => {
   const plugin = createPlugin();
-  const diagnostics = await runLintPlugin(plugin, "no-env-to-object.js");
-  assertObjectMatch(diagnostics[0], {
-    id: "deno-lint-plugin-extra-rules/no-env-to-object",
-    message: "`Deno.env.toObject()` requires full `--allow-env` permission.",
-  });
-  assertStrictEquals(diagnostics.length, 1);
+  const tests: Array<TestCase> = [
+    {
+      filename: "ng.js",
+      expected: [
+        {
+          id: "deno-lint-plugin-extra-rules/no-env-to-object",
+          message:
+            "`Deno.env.toObject()` requires full `--allow-env` permission.",
+        },
+      ],
+    },
+    {
+      filename: "ok.js",
+      expected: [],
+    },
+  ];
+  for (const { filename, expected } of tests) {
+    await t.step(filename, async () => {
+      const diagnostics = await runLintPlugin(
+        plugin,
+        `no-env-to-object/${filename}`,
+      );
+      for (let i = 0; i < expected.length; i++) {
+        assertObjectMatch(diagnostics[i], expected[i]);
+      }
+      assertStrictEquals(
+        diagnostics.length,
+        expected.length,
+      );
+    });
+  }
 });
 
 Deno.test("no-test-sanitizers", async (t) => {
