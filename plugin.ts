@@ -1,4 +1,3 @@
-const kDenoNS = "Deno";
 export function createPlugin(): Deno.lint.Plugin {
   const plugin: Deno.lint.Plugin = {
     name: "deno-lint-plugin-extra-rules",
@@ -10,39 +9,33 @@ export function createPlugin(): Deno.lint.Plugin {
       "no-test-sanitizers": {
         create: (ctx) => {
           const visitor = {
-            "CallExpression": (
-              node: Deno.lint.CallExpression,
-            ) => {
-              const callee = node.callee;
-              if (callee.type !== "MemberExpression") return;
-              if (callee.object.type !== "Identifier") return;
-              if (callee.object.name !== kDenoNS) return;
-              if (callee.property.type !== "Identifier") return;
-              if (callee.property.name !== "test") return;
+            "CallExpression[callee.type=MemberExpression][callee.object.name=Deno][callee.property.name=test]":
+              (
+                node: Deno.lint.CallExpression,
+              ) => {
+                const testOptionsArg = node.arguments.find((x) =>
+                  x.type === "ObjectExpression"
+                );
+                if (testOptionsArg == null) return;
+                const sanitizerOptions: Array<string> = [
+                  "sanitizeResources",
+                  "sanitizeOps",
+                  "sanitizeExit",
+                ] satisfies Array<keyof Deno.TestDefinition>;
+                for (const property of testOptionsArg.properties) {
+                  if (property.type !== "Property") continue;
+                  if (property.key.type !== "Identifier") continue;
+                  if (!sanitizerOptions.includes(property.key.name)) continue;
 
-              const testOptions = node.arguments.find((x) =>
-                x.type === "ObjectExpression"
-              );
-              if (testOptions == null) return;
-              const sanitizerOptions: Array<string> = [
-                "sanitizeResources",
-                "sanitizeOps",
-                "sanitizeExit",
-              ] satisfies Array<keyof Deno.TestDefinition>;
-              for (const property of testOptions.properties) {
-                if (property.type !== "Property") continue;
-                if (property.key.type !== "Identifier") continue;
-                if (!sanitizerOptions.includes(property.key.name)) continue;
-
-                if (property.value.type !== "Literal") continue;
-                if (property.value.value !== false) continue;
-                ctx.report({
-                  node: property,
-                  message: "Disabling test sanitizers should be avoided.",
-                  hint: `\`${property.key.name}: true\` should be removed.`,
-                });
-              }
-            },
+                  if (property.value.type !== "Literal") continue;
+                  if (property.value.value !== false) continue;
+                  ctx.report({
+                    node: property,
+                    message: "Disabling test sanitizers should be avoided.",
+                    hint: `\`${property.key.name}: true\` should be removed.`,
+                  });
+                }
+              },
           };
           return visitor;
         },
