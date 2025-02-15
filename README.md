@@ -26,4 +26,4 @@ Add the following to `deno.json`:
 | :------------------: | :----------------------------------------: |
 |  `no-env-to-object`  | Disallows the use of `Deno.env.toObject()` |
 | `no-test-sanitizers` |    Disallows disabling test sanitiziers    |
-|    `valid-expect`    |  Disallowss the use of invalid `expect()`  |
+|    `valid-expect`    |  Disallows the use of invalid `expect()`   |
