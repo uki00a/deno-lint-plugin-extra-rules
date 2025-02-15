@@ -22,8 +22,9 @@ Add the following to `deno.json`:
 
 ## Rules
 
-|         Name         |                Description                 |
-| :------------------: | :----------------------------------------: |
-|  `no-env-to-object`  | Disallows the use of `Deno.env.toObject()` |
-| `no-test-sanitizers` |    Disallows disabling test sanitiziers    |
-|    `valid-expect`    |  Disallows the use of invalid `expect()`   |
+|            Name             |                             Description                              |
+| :-------------------------: | :------------------------------------------------------------------: |
+|     `no-env-to-object`      |              Disallows the use of `Deno.env.toObject()`              |
+|    `no-test-sanitizers`     |                 Disallows disabling test sanitiziers                 |
+| `prefer-node-assert-strict` | Encourages the use of `node:assert/strict` rather than `node:assert` |
+|       `valid-expect`        |               Disallows the use of invalid `expect()`                |

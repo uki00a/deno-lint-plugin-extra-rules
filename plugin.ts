@@ -63,6 +63,29 @@ export function createPlugin(): Deno.lint.Plugin {
         },
       },
       /**
+       * @description Encourages the use of `node:assert/strict` rather than `node:assert`
+       * @category Testing
+       */
+      "prefer-node-assert-strict": {
+        create: (ctx) => {
+          const visitor = {
+            "ImportDeclaration[source.value=node:assert]": (
+              node: Deno.lint.ImportDeclaration,
+            ) => {
+              ctx.report({
+                node,
+                message:
+                  "`node:assert/strict` should be used instead of `node:assert`.",
+                fix: (fixer) => {
+                  return fixer.replaceText(node.source, `"node:assert/strict"`);
+                },
+              });
+            },
+          };
+          return visitor;
+        },
+      },
+      /**
        * @description Disallows the use of invalid `expect()`
        * @category Testing
        * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest}.
