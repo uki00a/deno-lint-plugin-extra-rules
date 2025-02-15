@@ -5,15 +5,20 @@
     ".": "./mod.ts"
   },
   "tasks": {
-    "check": "deno fmt --check && deno lint",
-    "test": "deno test --allow-read=. test.ts"
+    "check": "deno fmt --check && deno lint --ignore=testdata",
+    "test": "deno test --allow-read=. test.ts",
+    "test:e2e": {
+      "description": "Checks if `deno lint` fails as expected",
+      "command": "! deno lint testdata"
+    }
   },
   "lint": {
     "rules": {
       "include": [
         "no-console"
       ]
-    }
+    },
+    "plugins": ["./mod.ts"]
   },
   "exclude": ["./tmp"],
   "publish": {
