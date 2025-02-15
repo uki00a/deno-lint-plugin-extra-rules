@@ -54,25 +54,17 @@ export function createPlugin(): Deno.lint.Plugin {
       "no-env-to-object": {
         create: (ctx) => {
           const visitor = {
-            "CallExpression > MemberExpression": (
-              node: Deno.lint.MemberExpression,
-            ) => {
-              if (node.property.type !== "Identifier") return;
-              if (node.property.name !== "toObject") return;
-
-              const child = node.object;
-              if (child.type !== "MemberExpression") return;
-              if (child.object.type !== "Identifier") return;
-              if (child.object.name !== kDenoNS) return;
-              if (child.property.type !== "Identifier") return;
-
-              ctx.report({
-                node,
-                message:
-                  "`Deno.env.toObject()` requires full `--allow-env` permission.",
-                hint: "Recommended to use `Deno.env.get()` or similar.",
-              });
-            },
+            "CallExpression > MemberExpression[property.name=toObject][object.type=MemberExpression][object.object.name=Deno]":
+              (
+                node: Deno.lint.MemberExpression,
+              ) => {
+                ctx.report({
+                  node,
+                  message:
+                    "`Deno.env.toObject()` requires full `--allow-env` permission.",
+                  hint: "Recommended to use `Deno.env.get()` or similar.",
+                });
+              },
           };
           return visitor;
         },
