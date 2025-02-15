@@ -4,7 +4,8 @@
 [![Build Status](https://github.com/uki00a/deno-lint-plugin-extra-rules/workflows/CI/badge.svg)](https://github.com/uki00a/deno-lint-plugin-extra-rules/actions)
 
 An experimental `deno lint` plugin inspired by
-[eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n).
+[eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n) and
+[eslint-plugin-jest](https://github.com/jest-community/eslint-plugin-jest).
 
 ## Usage
 
@@ -21,7 +22,8 @@ Add the following to `deno.json`:
 
 ## Rules
 
-|         Name         |                Description                |
-| :------------------: | :---------------------------------------: |
-|  `no-env-to-object`  | Disallow the use of `Deno.env.toObject()` |
-| `no-test-sanitizers` |    Disallow disabling test sanitiziers    |
+|         Name         |                Description                 |
+| :------------------: | :----------------------------------------: |
+|  `no-env-to-object`  | Disallows the use of `Deno.env.toObject()` |
+| `no-test-sanitizers` |    Disallows disabling test sanitiziers    |
+|    `valid-expect`    |  Disallowss the use of invalid `expect()`  |

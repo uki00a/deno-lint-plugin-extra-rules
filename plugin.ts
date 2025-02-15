@@ -3,8 +3,11 @@ export function createPlugin(): Deno.lint.Plugin {
   const plugin: Deno.lint.Plugin = {
     name: "deno-lint-plugin-extra-rules",
     rules: {
+      /**
+       * @description Disallows disabling test sanitiziers
+       * @category Testing
+       */
       "no-test-sanitizers": {
-        /** @category Testing */
         create: (ctx) => {
           const visitor = {
             "CallExpression": (
@@ -44,8 +47,11 @@ export function createPlugin(): Deno.lint.Plugin {
           return visitor;
         },
       },
+      /**
+       * @description Disallows the use of `Deno.env.toObject()`
+       * @category Security
+       */
       "no-env-to-object": {
-        /** @category Security */
         create: (ctx) => {
           const visitor = {
             "CallExpression > MemberExpression": (
@@ -71,7 +77,48 @@ export function createPlugin(): Deno.lint.Plugin {
           return visitor;
         },
       },
+      /**
+       * @description Disallows the use of invalid `expect()`
+       * @category Testing
+       * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest}.
+       */
+      "valid-expect": {
+        create: (ctx) => {
+          const visitor = {
+            "CallExpression[callee.name=expect]": (
+              node: Deno.lint.CallExpression,
+            ) => {
+              const parent = getParentNode(ctx, node);
+              if (parent?.type !== "MemberExpression") {
+                // Example: `expect(123);`
+                return ctx.report({
+                  node,
+                  message: "A matcher is not specified.",
+                });
+              }
+
+              const grandParent = getParentNode(ctx, parent);
+              if (grandParent?.type !== "CallExpression") {
+                // Example: `example(123).toStrictEqual;`
+                return ctx.report({
+                  node,
+                  message: "The matcher is not called.",
+                });
+              }
+            },
+          };
+          return visitor;
+        },
+      },
     },
   };
   return plugin;
+}
+
+function getParentNode(
+  ctx: Deno.lint.RuleContext,
+  node: Deno.lint.Node,
+): Deno.lint.Node | null {
+  const ancestors = ctx.sourceCode.getAncestors(node);
+  return ancestors[ancestors.length - 1] ?? null;
 }
