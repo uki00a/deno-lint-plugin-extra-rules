@@ -64,7 +64,7 @@ Deno.test("no-test-sanitizers", async (t) => {
         {
           id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
           message: "Disabling test sanitizers should be avoided.",
-          hint: "`sanitizeResources: true` should be removed.",
+          hint: "`sanitizeResources: false` should be removed.",
         },
       ],
     },
@@ -74,7 +74,7 @@ Deno.test("no-test-sanitizers", async (t) => {
         {
           id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
           message: "Disabling test sanitizers should be avoided.",
-          hint: "`sanitizeOps: true` should be removed.",
+          hint: "`sanitizeOps: false` should be removed.",
         },
       ],
     },
@@ -84,7 +84,7 @@ Deno.test("no-test-sanitizers", async (t) => {
         {
           id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
           message: "Disabling test sanitizers should be avoided.",
-          hint: "`sanitizeOps: true` should be removed.",
+          hint: "`sanitizeOps: false` should be removed.",
         },
       ],
     },
@@ -94,7 +94,7 @@ Deno.test("no-test-sanitizers", async (t) => {
         {
           id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
           message: "Disabling test sanitizers should be avoided.",
-          hint: "`sanitizeExit: true` should be removed.",
+          hint: "`sanitizeExit: false` should be removed.",
         },
       ],
     },

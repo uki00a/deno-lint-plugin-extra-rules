@@ -29,7 +29,7 @@ export function createPlugin(): Deno.lint.Plugin {
                 ctx.report({
                   node: property,
                   message: "Disabling test sanitizers should be avoided.",
-                  hint: `\`${property.key.name}: true\` should be removed.`,
+                  hint: `\`${property.key.name}: false\` should be removed.`,
                 });
               }
             },
@@ -108,7 +108,7 @@ export function createPlugin(): Deno.lint.Plugin {
                   ctx.report({
                     node: property,
                     message: "Disabling test sanitizers should be avoided.",
-                    hint: `\`${property.key.name}: true\` should be removed.`,
+                    hint: `\`${property.key.name}: false\` should be removed.`,
                   });
                 }
               },
