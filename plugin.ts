@@ -8,24 +8,100 @@ export function createPlugin(): Deno.lint.Plugin {
        */
       "no-test-sanitizers": {
         create: (ctx) => {
+          const callExpressionForDenoTestSelector =
+            "CallExpression[callee.type=MemberExpression][callee.object.name=Deno][callee.property.name=test]";
           const visitor = {
-            "CallExpression[callee.type=MemberExpression][callee.object.name=Deno][callee.property.name=test]":
+            [callExpressionForDenoTestSelector]: (
+              node: Deno.lint.CallExpression,
+            ) => {
+              // This callback looks for `Deno.test` with test sanitizers disabled.
+              const testOptionsArg = node.arguments.find((x) =>
+                x.type === "ObjectExpression"
+              );
+              if (testOptionsArg == null) return;
+              for (const property of testOptionsArg.properties) {
+                if (property.type !== "Property") continue;
+                if (property.key.type !== "Identifier") continue;
+                if (!testSanitizerOptions.includes(property.key.name)) continue;
+
+                if (property.value.type !== "Literal") continue;
+                if (property.value.value !== false) continue;
+                ctx.report({
+                  node: property,
+                  message: "Disabling test sanitizers should be avoided.",
+                  hint: `\`${property.key.name}: true\` should be removed.`,
+                });
+              }
+            },
+            [`${callExpressionForDenoTestSelector} CallExpression[callee.type=MemberExpression][callee.property.name=step][arguments.length=1]`]:
               (
                 node: Deno.lint.CallExpression,
               ) => {
-                const testOptionsArg = node.arguments.find((x) =>
-                  x.type === "ObjectExpression"
-                );
-                if (testOptionsArg == null) return;
-                const sanitizerOptions: Array<string> = [
-                  "sanitizeResources",
-                  "sanitizeOps",
-                  "sanitizeExit",
-                ] satisfies Array<keyof Deno.TestDefinition>;
-                for (const property of testOptionsArg.properties) {
+                // This callback looks for `Deno.TestContext#step` with test sanitizers disabled.
+                if (node.callee.type !== "MemberExpression") return;
+                if (node.callee.object.type !== "Identifier") return;
+                const maybeTestContext = node.callee.object;
+
+                // Checks if `node` is actually a call to `TestContext#step`.
+                const ancestors = ctx.sourceCode.getAncestors(node);
+                const isCallExpressionForTestContextStep =
+                  null != ancestors.findLast(
+                    (maybeCallExpression, i) => {
+                      // NOTE: `ancestors[ancestors.length - 1]` references `node` itself.
+                      const isLastNode = i === ancestors.length - 1;
+                      if (isLastNode) return false;
+
+                      if (maybeCallExpression.type !== "CallExpression") {
+                        return false;
+                      }
+                      if (
+                        maybeCallExpression.callee.type !== "MemberExpression"
+                      ) return false;
+                      if (
+                        maybeCallExpression.callee.property.type !==
+                          "Identifier"
+                      ) return false;
+                      switch (maybeCallExpression.callee.property.name) {
+                        case "test":
+                          // `Deno.test()`
+                          if (
+                            maybeCallExpression.callee.object.type !==
+                              "Identifier"
+                          ) return false;
+                          if (
+                            maybeCallExpression.callee.object.name !== "Deno"
+                          ) return false;
+                          break; // `maybeCallExpression` is a `Deno.test()` call
+                        case "step":
+                          break; // `maybeCallExpression` is a `Deno.TestContext#step` call.
+                        default:
+                          return false;
+                      }
+
+                      // A function argument passed to `Deno.test()` or `Deno.TestContext#step`.
+                      const testFnArg = maybeCallExpression.arguments.find((
+                        x,
+                      ) => x.type === "ArrowFunctionExpression");
+                      if (testFnArg == null) return false;
+
+                      if (testFnArg.params.length === 0) return false;
+                      const [testContextParam] = testFnArg.params;
+                      if (testContextParam.type !== "Identifier") return false;
+                      return testContextParam.name === maybeTestContext.name;
+                    },
+                  );
+                if (!isCallExpressionForTestContextStep) return;
+
+                const [testStepDefinitionArg] = node.arguments;
+                if (testStepDefinitionArg == null) return;
+                if (testStepDefinitionArg.type !== "ObjectExpression") return;
+
+                for (const property of testStepDefinitionArg.properties) {
                   if (property.type !== "Property") continue;
                   if (property.key.type !== "Identifier") continue;
-                  if (!sanitizerOptions.includes(property.key.name)) continue;
+                  if (!testSanitizerOptions.includes(property.key.name)) {
+                    continue;
+                  }
 
                   if (property.value.type !== "Literal") continue;
                   if (property.value.value !== false) continue;
@@ -130,3 +206,9 @@ function getParentNode(
   const ancestors = ctx.sourceCode.getAncestors(node);
   return ancestors[ancestors.length - 1] ?? null;
 }
+
+const testSanitizerOptions: Array<string> = [
+  "sanitizeResources",
+  "sanitizeOps",
+  "sanitizeExit",
+] satisfies Array<keyof Deno.TestDefinition>;
