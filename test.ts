@@ -89,6 +89,16 @@ Deno.test("no-test-sanitizers", async (t) => {
       ],
     },
     {
+      filename: "test-context-step.js",
+      expected: [
+        {
+          id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
+          message: "Disabling test sanitizers should be avoided.",
+          hint: "`sanitizeExit: true` should be removed.",
+        },
+      ],
+    },
+    {
       filename: "ok.js",
       expected: [],
     },
