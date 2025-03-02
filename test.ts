@@ -55,14 +55,14 @@ Deno.test("no-env-to-object", async (t) => {
   }
 });
 
-Deno.test("no-test-sanitizers", async (t) => {
+Deno.test("require-test-sanitizers", async (t) => {
   const plugin = createPlugin();
   const tests: Array<TestCase> = [
     {
       filename: "resources.js",
       expected: [
         {
-          id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
+          id: "deno-lint-plugin-extra-rules/require-test-sanitizers",
           message: "Disabling test sanitizers should be avoided.",
           hint: "`sanitizeResources: false` should be removed.",
         },
@@ -72,7 +72,7 @@ Deno.test("no-test-sanitizers", async (t) => {
       filename: "ops.js",
       expected: [
         {
-          id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
+          id: "deno-lint-plugin-extra-rules/require-test-sanitizers",
           message: "Disabling test sanitizers should be avoided.",
           hint: "`sanitizeOps: false` should be removed.",
         },
@@ -82,7 +82,7 @@ Deno.test("no-test-sanitizers", async (t) => {
       filename: "name-options-fn.js",
       expected: [
         {
-          id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
+          id: "deno-lint-plugin-extra-rules/require-test-sanitizers",
           message: "Disabling test sanitizers should be avoided.",
           hint: "`sanitizeOps: false` should be removed.",
         },
@@ -92,7 +92,7 @@ Deno.test("no-test-sanitizers", async (t) => {
       filename: "test-context-step.js",
       expected: [
         {
-          id: "deno-lint-plugin-extra-rules/no-test-sanitizers",
+          id: "deno-lint-plugin-extra-rules/require-test-sanitizers",
           message: "Disabling test sanitizers should be avoided.",
           hint: "`sanitizeExit: false` should be removed.",
         },
@@ -107,7 +107,7 @@ Deno.test("no-test-sanitizers", async (t) => {
     await t.step(filename, async () => {
       const diagnostics = await runLintPlugin(
         plugin,
-        `no-test-sanitizers/${filename}`,
+        `require-test-sanitizers/${filename}`,
       );
       for (let i = 0; i < expected.length; i++) {
         assertObjectMatch(diagnostics[i], expected[i]);

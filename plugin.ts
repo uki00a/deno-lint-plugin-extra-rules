@@ -6,7 +6,7 @@ export function createPlugin(): Deno.lint.Plugin {
        * @description Disallows disabling test sanitiziers
        * @category Testing
        */
-      "no-test-sanitizers": {
+      "require-test-sanitizers": {
         create: (ctx) => {
           const callExpressionForDenoTestSelector =
             "CallExpression[callee.type=MemberExpression][callee.object.name=Deno][callee.property.name=test]";
