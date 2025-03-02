@@ -1,7 +1,34 @@
+import { extractLintIgnoreDirectives } from "./internal/comment.ts";
+
 export function createPlugin(): Deno.lint.Plugin {
   const plugin: Deno.lint.Plugin = {
     name: "deno-lint-plugin-extra-rules",
     rules: {
+      /**
+       * @description Disallows the use of `deno-lint-ignore` without the reason
+       * @category Comment
+       */
+      "no-deno-lint-ignore-without-reason": {
+        create: (ctx) => {
+          const visitor = {
+            Program: () => {
+              for (
+                const directive of extractLintIgnoreDirectives(
+                  ctx.sourceCode.text,
+                )
+              ) {
+                if (directive.reason == null) {
+                  ctx.report({
+                    message: "Specify the reason for this ignore directive",
+                    range: directive.range,
+                  });
+                }
+              }
+            },
+          };
+          return visitor;
+        },
+      },
       /**
        * @description Disallows disabling test sanitiziers
        * @category Testing

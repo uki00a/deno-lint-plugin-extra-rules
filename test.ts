@@ -20,6 +20,51 @@ async function runLintPlugin(
   );
 }
 
+Deno.test("no-deno-lint-ignore-without-reason", async (t) => {
+  const plugin = createPlugin();
+  const tests: Array<TestCase> = [
+    {
+      filename: "ng.js",
+      expected: [
+        {
+          id: "deno-lint-plugin-extra-rules/no-deno-lint-ignore-without-reason",
+          message: "Specify the reason for this ignore directive",
+          range: [0, 35],
+        },
+        {
+          id: "deno-lint-plugin-extra-rules/no-deno-lint-ignore-without-reason",
+          message: "Specify the reason for this ignore directive",
+          range: [58, 105],
+        },
+        {
+          id: "deno-lint-plugin-extra-rules/no-deno-lint-ignore-without-reason",
+          message: "Specify the reason for this ignore directive",
+          range: [140, 174],
+        },
+      ],
+    },
+    {
+      filename: "ok.js",
+      expected: [],
+    },
+  ];
+  for (const { filename, expected } of tests) {
+    await t.step(filename, async () => {
+      const diagnostics = await runLintPlugin(
+        plugin,
+        `no-deno-lint-ignore-without-reason/${filename}`,
+      );
+      for (let i = 0; i < expected.length; i++) {
+        assertObjectMatch(diagnostics[i], expected[i]);
+      }
+      assertStrictEquals(
+        diagnostics.length,
+        expected.length,
+      );
+    });
+  }
+});
+
 Deno.test("no-env-to-object", async (t) => {
   const plugin = createPlugin();
   const tests: Array<TestCase> = [
