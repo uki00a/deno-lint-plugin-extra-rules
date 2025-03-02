@@ -1,11 +1,37 @@
+/**
+ * @description Lint rules provided by this plugin.
+ */
+export interface LintRules {
+  /**
+   * @description Disallows disabling test sanitiziers
+   * @category Testing
+   */
+  "require-test-sanitizers": Deno.lint.Rule;
+
+  /**
+   * @description Disallows the use of `Deno.env.toObject()`
+   * @category Security
+   */
+  "no-env-to-object": Deno.lint.Rule;
+
+  /**
+   * @description Encourages the use of `node:assert/strict` rather than `node:assert`
+   * @category Testing
+   */
+  "prefer-node-assert-strict": Deno.lint.Rule;
+
+  /**
+   * @description Disallows the use of invalid `expect()`
+   * @category Testing
+   * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest}.
+   */
+  "valid-expect": Deno.lint.Rule;
+}
+
 export function createPlugin(): Deno.lint.Plugin {
   const plugin: Deno.lint.Plugin = {
     name: "deno-lint-plugin-extra-rules",
     rules: {
-      /**
-       * @description Disallows disabling test sanitiziers
-       * @category Testing
-       */
       "require-test-sanitizers": {
         create: (ctx) => {
           const callExpressionForDenoTestSelector =
@@ -116,10 +142,6 @@ export function createPlugin(): Deno.lint.Plugin {
           return visitor;
         },
       },
-      /**
-       * @description Disallows the use of `Deno.env.toObject()`
-       * @category Security
-       */
       "no-env-to-object": {
         create: (ctx) => {
           const visitor = {
@@ -138,10 +160,6 @@ export function createPlugin(): Deno.lint.Plugin {
           return visitor;
         },
       },
-      /**
-       * @description Encourages the use of `node:assert/strict` rather than `node:assert`
-       * @category Testing
-       */
       "prefer-node-assert-strict": {
         create: (ctx) => {
           const visitor = {
@@ -161,11 +179,6 @@ export function createPlugin(): Deno.lint.Plugin {
           return visitor;
         },
       },
-      /**
-       * @description Disallows the use of invalid `expect()`
-       * @category Testing
-       * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest}.
-       */
       "valid-expect": {
         create: (ctx) => {
           const visitor = {
@@ -194,7 +207,7 @@ export function createPlugin(): Deno.lint.Plugin {
           return visitor;
         },
       },
-    },
+    } satisfies LintRules,
   };
   return plugin;
 }
