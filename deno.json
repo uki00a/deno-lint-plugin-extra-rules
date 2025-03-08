@@ -6,7 +6,7 @@
   },
   "tasks": {
     "check": "deno fmt --check && deno lint --ignore=testdata",
-    "test": "deno test --allow-read=. test.ts",
+    "test": "deno test --allow-read=. ./tests",
     "test:e2e": {
       "description": "Checks if `deno lint` fails as expected",
       "command": "! deno lint testdata"
@@ -24,8 +24,8 @@
   "publish": {
     "exclude": [
       "./testdata",
-      "./**/*_test.ts",
-      "./**/test.ts",
+      "./tests",
+      "./**/*.test.ts",
       ".github/",
       "./.*"
     ]
