@@ -1,3 +1,4 @@
+// NOTE: `@category` tag is recognized by `deno doc` (https://github.com/denoland/deno_doc/blob/0.169.0/js/types.d.ts#L236)
 /**
  * @description Lint rules provided by this plugin.
  */
@@ -13,6 +14,12 @@ export interface LintRules {
    * @category Security
    */
   "no-env-to-object": Deno.lint.Rule;
+
+  /**
+   * @description Disallows the use of `Deno.exit()`
+   * @category Deno
+   */
+  "no-exit": Deno.lint.Rule;
 
   /**
    * @description Encourages the use of `node:assert/strict` rather than `node:assert`
@@ -154,6 +161,22 @@ export function createPlugin(): Deno.lint.Plugin {
                   message:
                     "`Deno.env.toObject()` requires full `--allow-env` permission.",
                   hint: "Recommended to use `Deno.env.get()` or similar.",
+                });
+              },
+          };
+          return visitor;
+        },
+      },
+      "no-exit": {
+        create: (ctx) => {
+          const visitor = {
+            "CallExpression.callee[type=MemberExpression][object.name=Deno][property.name=exit]":
+              (
+                node: Deno.lint.MemberExpression,
+              ) => {
+                ctx.report({
+                  node,
+                  message: "`Deno.exit()` should be used sparingly.",
                 });
               },
           };
