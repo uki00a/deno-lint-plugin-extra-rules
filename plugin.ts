@@ -164,6 +164,7 @@ export function createPlugin(): Deno.lint.Plugin {
           const visitor = {
             "CallExpression[callee.type=MemberExpression][callee.object.name=Deno][callee.property.name=test]":
               (node: Deno.lint.CallExpression) => {
+                // This callback looks for `Deno.test()` with `ignore: true`.
                 const optionsArg = node.arguments.find((arg) =>
                   arg.type === "ObjectExpression"
                 );
@@ -188,6 +189,7 @@ export function createPlugin(): Deno.lint.Plugin {
               },
             "CallExpression[callee.type=MemberExpression][callee.object.type=MemberExpression][callee.property.name=ignore][callee.object.property.name=test][callee.object.object.name=Deno]":
               (node: Deno.lint.CallExpression) => {
+                // This callback looks for `Deno.test.ignore()`.
                 ctx.report({ node, message });
               },
           };
