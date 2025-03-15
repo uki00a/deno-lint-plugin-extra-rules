@@ -85,7 +85,7 @@ async function main() {
  * @returns {string}
  */
 function generateMarkdown(rules) {
-  /** @type {Record<string, Array<LineRule>>} */
+  /** @type {Record<string, Array<LintRule>>} */
   const rulesByCategory = {};
   for (const rule of rules) {
     for (const category of rule.categories) {
