@@ -5,13 +5,13 @@
 export interface LintRules {
   /**
    * @description Disallows disabling test sanitiziers
-   * @category Testing
+   * @category Deno, Testing
    */
   "require-test-sanitizers": Deno.lint.Rule;
 
   /**
    * @description Disallows the use of `Deno.env.toObject()`
-   * @category Security
+   * @category Deno, Security
    */
   "no-env-to-object": Deno.lint.Rule;
 
@@ -23,13 +23,13 @@ export interface LintRules {
 
   /**
    * @description Encourages the use of `node:assert/strict` rather than `node:assert`
-   * @category Testing
+   * @category Node.js, Testing
    */
   "prefer-node-assert-strict": Deno.lint.Rule;
 
   /**
    * @description Disallows the use of invalid `expect()`
-   * @category Testing
+   * @category std, Testing
    * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest}.
    */
   "valid-expect": Deno.lint.Rule;
