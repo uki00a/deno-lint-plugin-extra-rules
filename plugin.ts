@@ -187,7 +187,7 @@ export function createPlugin(): Deno.lint.Plugin {
                   });
                 }
               },
-            "CallExpression[callee.type=MemberExpression][callee.object.type=MemberExpression][callee.property.name=ignore][callee.object.property.name=test][callee.object.object.name=Deno]":
+            [`CallExpression[callee.type=MemberExpression][callee.object.type=MemberExpression][callee.property.name=${kIgnore}][callee.object.property.name=test][callee.object.object.name=Deno]`]:
               (node: Deno.lint.CallExpression) => {
                 // This callback looks for `Deno.test.ignore()`.
                 ctx.report({ node, message });
