@@ -1,3 +1,4 @@
+// @ts-check
 Deno.test(function foo() {
 });
 
