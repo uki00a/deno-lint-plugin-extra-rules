@@ -10,6 +10,13 @@ export interface LintRules {
   "require-test-sanitizers": Deno.lint.Rule;
 
   /**
+   * @description Disallows disabling tests
+   * @category Deno, Testing, std
+   * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest eslint-plugin-jest}.
+   */
+  "no-disabled-tests": Deno.lint.Rule;
+
+  /**
    * @description Disallows the use of `Deno.env.toObject()`
    * @category Deno, Security
    */
@@ -30,10 +37,12 @@ export interface LintRules {
   /**
    * @description Disallows the use of invalid `expect()`
    * @category std, Testing
-   * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest}.
+   * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest eslint-plugin-jest}.
    */
   "valid-expect": Deno.lint.Rule;
 }
+
+const kIgnore = "ignore";
 
 export function createPlugin(): Deno.lint.Plugin {
   const plugin: Deno.lint.Plugin = {
@@ -144,6 +153,44 @@ export function createPlugin(): Deno.lint.Plugin {
                     hint: `\`${property.key.name}: false\` should be removed.`,
                   });
                 }
+              },
+          };
+          return visitor;
+        },
+      },
+      "no-disabled-tests": {
+        create: (ctx) => {
+          const message = "A test case should not be disabled.";
+          const visitor = {
+            "CallExpression[callee.type=MemberExpression][callee.object.name=Deno][callee.property.name=test]":
+              (node: Deno.lint.CallExpression) => {
+                // This callback looks for `Deno.test()` with `ignore: true`.
+                const optionsArg = node.arguments.find((arg) =>
+                  arg.type === "ObjectExpression"
+                );
+                if (optionsArg?.type !== "ObjectExpression") return;
+                const ignoreOptionProperty = optionsArg.properties.find((
+                  property,
+                ) =>
+                  property.type === "Property" &&
+                  property.key.type === "Identifier" &&
+                  property.key.name === kIgnore
+                );
+                if (ignoreOptionProperty?.type !== "Property") return;
+                if (
+                  ignoreOptionProperty.value.type !== "Literal" ||
+                  ignoreOptionProperty.value.value !== false
+                ) {
+                  ctx.report({
+                    node: ignoreOptionProperty,
+                    message,
+                  });
+                }
+              },
+            [`CallExpression[callee.type=MemberExpression][callee.object.type=MemberExpression][callee.property.name=${kIgnore}][callee.object.property.name=test][callee.object.object.name=Deno]`]:
+              (node: Deno.lint.CallExpression) => {
+                // This callback looks for `Deno.test.ignore()`.
+                ctx.report({ node, message });
               },
           };
           return visitor;
