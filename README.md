@@ -23,11 +23,4 @@ Add the following to `deno.json`:
 
 ## Rules
 
-|            Name             |                             Description                              |
-| :-------------------------: | :------------------------------------------------------------------: |
-|     `no-disabled-tests`     |                      Disallows disabling tests                       |
-|     `no-env-to-object`      |              Disallows the use of `Deno.env.toObject()`              |
-|          `no-exit`          |                  Disallows the use of `Deno.exit()`                  |
-|  `require-test-sanitizers`  |                 Disallows disabling test sanitiziers                 |
-| `prefer-node-assert-strict` | Encourages the use of `node:assert/strict` rather than `node:assert` |
-|       `valid-expect`        |               Disallows the use of invalid `expect()`                |
+See [docs/rules.md](./docs/rules.md).
