@@ -5,7 +5,11 @@
     ".": "./mod.ts"
   },
   "tasks": {
-    "check": "deno fmt --check && deno lint --ignore=testdata",
+    "check": {
+      "dependencies": ["check:lint", "check:types"]
+    },
+    "check:lint": "deno fmt --check && deno lint --ignore=testdata",
+    "check:types": "deno check mod.ts testdata",
     "test": "deno test --allow-read=. ./tests",
     "test:e2e": {
       "description": "Checks if `deno lint` fails as expected",
