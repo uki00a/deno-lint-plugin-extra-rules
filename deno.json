@@ -9,7 +9,8 @@
       "dependencies": ["check:lint", "check:types"]
     },
     "check:lint": "deno fmt --check && deno lint --ignore=testdata",
-    "check:types": "deno check mod.ts testdata",
+    "check:types": "deno check mod.ts testdata tools",
+    "docs:rules": "deno run --allow-run=deno --allow-write=docs/rules.md tools/list-rules.js",
     "test": "deno test --allow-read=. ./tests",
     "test:e2e": {
       "description": "Checks if `deno lint` fails as expected",
@@ -29,6 +30,7 @@
     "exclude": [
       "./testdata",
       "./tests",
+      "./tools",
       "./**/*.test.ts",
       ".github/",
       "./.*"
