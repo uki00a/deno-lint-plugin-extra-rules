@@ -3,7 +3,8 @@
 [![JSR](https://jsr.io/badges/@uki00a/deno-lint-plugin-extra-rules)](https://jsr.io/@uki00a/deno-lint-plugin-extra-rules)
 [![Build Status](https://github.com/uki00a/deno-lint-plugin-extra-rules/workflows/CI/badge.svg)](https://github.com/uki00a/deno-lint-plugin-extra-rules/actions)
 
-An experimental `deno lint` plugin inspired by
+A `deno lint` plugin for Deno's built-in APIs and
+[std](https://github.com/denoland/std). Heavily inspired by
 [eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n) and
 [eslint-plugin-jest](https://github.com/jest-community/eslint-plugin-jest).
 
