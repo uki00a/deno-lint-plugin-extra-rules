@@ -20,6 +20,13 @@
 | `prefer-node-assert-strict` | Encourages the use of `node:assert/strict` rather than `node:assert` |
 |       `valid-expect`        |               Disallows the use of invalid `expect()`                |
 
+### Node.js
+
+|            Name             |                             Description                              |
+| :-------------------------: | :------------------------------------------------------------------: |
+|     `no-disabled-tests`     |                      Disallows disabling tests                       |
+| `prefer-node-assert-strict` | Encourages the use of `node:assert/strict` rather than `node:assert` |
+
 ### std
 
 |        Name         |               Description               |
@@ -32,9 +39,3 @@
 |        Name        |                Description                 |
 | :----------------: | :----------------------------------------: |
 | `no-env-to-object` | Disallows the use of `Deno.env.toObject()` |
-
-### Node.js
-
-|            Name             |                             Description                              |
-| :-------------------------: | :------------------------------------------------------------------: |
-| `prefer-node-assert-strict` | Encourages the use of `node:assert/strict` rather than `node:assert` |
