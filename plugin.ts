@@ -203,7 +203,9 @@ export function createPlugin(): Deno.lint.Plugin {
               const optionsArg = node.arguments[1];
               if (optionsArg?.type !== "ObjectExpression") return;
               const skipOption = optionsArg.properties.find((property) =>
-                property.type === "Property" && property.key.name === "skip"
+                property.type === "Property" &&
+                property.key.type === "Identifier" &&
+                property.key.name === "skip"
               );
               if (skipOption?.type !== "Property") return;
               if (
