@@ -6,7 +6,7 @@ import { runLintPlugin } from "./shared.ts";
 
 Deno.test("no-disabled-tests", async (t) => {
   const plugin = createPlugin();
-  const expectedDiagnostic: TestCase = Object.freeze({
+  const expectedDiagnostic: Partial<Deno.lint.Diagnostic> = Object.freeze({
     id: "deno-lint-plugin-extra-rules/no-disabled-tests",
     message: "A test case should not be disabled.",
   });
