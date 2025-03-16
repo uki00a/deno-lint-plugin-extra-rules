@@ -6,24 +6,26 @@ import { runLintPlugin } from "./shared.ts";
 
 Deno.test("no-disabled-tests", async (t) => {
   const plugin = createPlugin();
+  const expectedDiagnostic: TestCase = Object.freeze({
+    id: "deno-lint-plugin-extra-rules/no-disabled-tests",
+    message: "A test case should not be disabled.",
+  });
   const tests: Array<TestCase> = [
     {
       filename: "ignore-option.js",
-      expected: [
-        {
-          id: "deno-lint-plugin-extra-rules/no-disabled-tests",
-          message: "A test case should not be disabled.",
-        },
-      ],
+      expected: [expectedDiagnostic],
     },
     {
       filename: "ignore-method.js",
-      expected: [
-        {
-          id: "deno-lint-plugin-extra-rules/no-disabled-tests",
-          message: "A test case should not be disabled.",
-        },
-      ],
+      expected: [expectedDiagnostic],
+    },
+    {
+      filename: "node-test-skip-option.js",
+      expected: [expectedDiagnostic],
+    },
+    {
+      filename: "node-test-skip-method.js",
+      expected: [expectedDiagnostic],
     },
     {
       filename: "ok.js",
