@@ -43,6 +43,7 @@ export interface LintRules {
 }
 
 const kIgnore = "ignore";
+const kSkip = "skip";
 const kCallExpressionForDenoTestSelector =
   "CallExpression[callee.type=MemberExpression][callee.object.name=Deno][callee.property.name=test]";
 
@@ -161,7 +162,6 @@ export function createPlugin(): Deno.lint.Plugin {
         },
       },
       "no-disabled-tests": {
-        // TODO: Support BDD style test cases.
         create: (ctx) => {
           const message = "A test case should not be disabled.";
           const visitor = {
@@ -205,7 +205,7 @@ export function createPlugin(): Deno.lint.Plugin {
               const skipOption = optionsArg.properties.find((property) =>
                 property.type === "Property" &&
                 property.key.type === "Identifier" &&
-                property.key.name === "skip"
+                property.key.name === kSkip
               );
               if (skipOption?.type !== "Property") return;
               if (
@@ -217,9 +217,31 @@ export function createPlugin(): Deno.lint.Plugin {
                 message,
               });
             },
-            "CallExpression[callee.type=MemberExpression][callee.property.name=skip][callee.object.name=test]":
+            "CallExpression[callee.type=MemberExpression][callee.object.name=test]":
               (node: Deno.lint.CallExpression) => {
-                // This callback looks for `node:test`'s `test.skip()`.
+                // This callback looks for `test.{ignore,skip}()` which is supported by `@std/testing/bdd` and `node:test`.
+                if (node.callee.type !== "MemberExpression") return;
+                if (node.callee.property.type !== "Identifier") return;
+                const calledMethod = node.callee.property.name;
+                if (calledMethod !== kSkip && calledMethod !== kIgnore) return;
+                ctx.report({ node, message });
+              },
+            "CallExpression[callee.type=MemberExpression][callee.object.name=describe]":
+              (node: Deno.lint.CallExpression) => {
+                // This callback looks for `describe.{skip,ignore}` which is supported by `@std/testing/bdd` and `node:test`.
+                if (node.callee.type !== "MemberExpression") return;
+                if (node.callee.property.type !== "Identifier") return;
+                const calledMethod = node.callee.property.name;
+                if (calledMethod !== kSkip && calledMethod !== kIgnore) return;
+                ctx.report({ node, message });
+              },
+            "CallExpression[callee.type=MemberExpression][callee.object.name=it]":
+              (node: Deno.lint.CallExpression) => {
+                // This callback looks for `it.{skip,ignore}()` which is supported by `@std/testing/bdd` and `node:test`.
+                if (node.callee.type !== "MemberExpression") return;
+                if (node.callee.property.type !== "Identifier") return;
+                const calledMethod = node.callee.property.name;
+                if (calledMethod !== kSkip && calledMethod !== kIgnore) return;
                 ctx.report({ node, message });
               },
           };

@@ -28,6 +28,42 @@ Deno.test("no-disabled-tests", async (t) => {
       expected: [expectedDiagnostic],
     },
     {
+      filename: "bdd-describe-skip.js",
+      expected: [
+        {
+          ...expectedDiagnostic,
+          range: [63, 188],
+        },
+      ],
+    },
+    {
+      filename: "bdd-describe-ignore.js",
+      expected: [
+        {
+          ...expectedDiagnostic,
+          range: [63, 183],
+        },
+      ],
+    },
+    {
+      filename: "bdd-it-ignore.js",
+      expected: [
+        {
+          ...expectedDiagnostic,
+          range: [106, 173],
+        },
+      ],
+    },
+    {
+      filename: "bdd-it-skip.js",
+      expected: [
+        {
+          ...expectedDiagnostic,
+          range: [104, 169],
+        },
+      ],
+    },
+    {
       filename: "ok.js",
       expected: [],
     },
