@@ -25,14 +25,19 @@ Deno.test("no-disabled-tests", async (t) => {
     },
     {
       filename: "node-test-skip-method.js",
-      expected: [expectedDiagnostic],
+      expected: [
+        {
+          ...expectedDiagnostic,
+          range: [53, 57],
+        },
+      ],
     },
     {
       filename: "bdd-describe-skip.js",
       expected: [
         {
           ...expectedDiagnostic,
-          range: [63, 188],
+          range: [72, 76],
         },
       ],
     },
@@ -41,7 +46,7 @@ Deno.test("no-disabled-tests", async (t) => {
       expected: [
         {
           ...expectedDiagnostic,
-          range: [63, 183],
+          range: [72, 78],
         },
       ],
     },
@@ -50,7 +55,7 @@ Deno.test("no-disabled-tests", async (t) => {
       expected: [
         {
           ...expectedDiagnostic,
-          range: [106, 173],
+          range: [109, 115],
         },
       ],
     },
@@ -59,7 +64,7 @@ Deno.test("no-disabled-tests", async (t) => {
       expected: [
         {
           ...expectedDiagnostic,
-          range: [104, 169],
+          range: [107, 111],
         },
       ],
     },

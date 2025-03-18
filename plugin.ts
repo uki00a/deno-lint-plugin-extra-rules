@@ -224,7 +224,7 @@ export function createPlugin(): Deno.lint.Plugin {
                 if (node.callee.property.type !== "Identifier") return;
                 const calledMethod = node.callee.property.name;
                 if (calledMethod !== kSkip && calledMethod !== kIgnore) return;
-                ctx.report({ node, message });
+                ctx.report({ node: node.callee.property, message });
               },
             "CallExpression[callee.type=MemberExpression][callee.object.name=describe]":
               (node: Deno.lint.CallExpression) => {
@@ -233,7 +233,7 @@ export function createPlugin(): Deno.lint.Plugin {
                 if (node.callee.property.type !== "Identifier") return;
                 const calledMethod = node.callee.property.name;
                 if (calledMethod !== kSkip && calledMethod !== kIgnore) return;
-                ctx.report({ node, message });
+                ctx.report({ node: node.callee.property, message });
               },
             "CallExpression[callee.type=MemberExpression][callee.object.name=it]":
               (node: Deno.lint.CallExpression) => {
@@ -242,7 +242,7 @@ export function createPlugin(): Deno.lint.Plugin {
                 if (node.callee.property.type !== "Identifier") return;
                 const calledMethod = node.callee.property.name;
                 if (calledMethod !== kSkip && calledMethod !== kIgnore) return;
-                ctx.report({ node, message });
+                ctx.report({ node: node.callee.property, message });
               },
           };
           return visitor;
