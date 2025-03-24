@@ -6,11 +6,6 @@ on:
       - "**"
     paths:
       - ".github/**/*.yml"
-  pull_request:
-    branches:
-      - "**"
-    paths:
-      - ".github/**/*.yml"
 
 jobs:
   lint:
