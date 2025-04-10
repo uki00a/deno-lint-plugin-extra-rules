@@ -26,6 +26,7 @@ Deno.test("valid-expect", async (t) => {
         {
           id: "deno-lint-plugin-extra-rules/valid-expect",
           message: "The matcher is not called.",
+          range: [66, 79],
         },
       ],
     },
