@@ -320,7 +320,7 @@ export function createPlugin(): Deno.lint.Plugin {
               if (grandParent?.type !== "CallExpression") {
                 // Example: `example(123).toStrictEqual;`
                 return ctx.report({
-                  node,
+                  node: parent.property,
                   message: "The matcher is not called.",
                 });
               }
