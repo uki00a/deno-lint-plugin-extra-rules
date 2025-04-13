@@ -307,7 +307,7 @@ export function createPlugin(): Deno.lint.Plugin {
             "CallExpression[callee.name=expect]": (
               node: Deno.lint.CallExpression,
             ) => {
-              const parent = getParentNode(ctx, node);
+              const parent = node.parent;
               if (parent?.type !== "MemberExpression") {
                 // Example: `expect(123);`
                 return ctx.report({
@@ -316,7 +316,7 @@ export function createPlugin(): Deno.lint.Plugin {
                 });
               }
 
-              const grandParent = getParentNode(ctx, parent);
+              const grandParent = parent.parent;
               if (grandParent?.type !== "CallExpression") {
                 // Example: `example(123).toStrictEqual;`
                 return ctx.report({
@@ -332,14 +332,6 @@ export function createPlugin(): Deno.lint.Plugin {
     } satisfies LintRules,
   };
   return plugin;
-}
-
-function getParentNode(
-  ctx: Deno.lint.RuleContext,
-  node: Deno.lint.Node,
-): Deno.lint.Node | null {
-  const ancestors = ctx.sourceCode.getAncestors(node);
-  return ancestors[ancestors.length - 1] ?? null;
 }
 
 const testSanitizerOptions: Array<string> = [
