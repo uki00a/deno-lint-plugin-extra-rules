@@ -24,7 +24,7 @@ async function main() {
    * @typedef {{ kind: "category", doc: string }} CategoryJSDocTag
    * @typedef {{ kind: "unsupported", value: string }} UnsupportedJSDocTag
    * @typedef {CategoryJSDocTag | UnsupportedJSDocTag} JSDocTag
-   * @typedef {{ tags: Array<JSDocTag> }} JSDoc
+   * @typedef {{ doc: string, tags: Array<JSDocTag> }} JSDoc
    * @typedef {{ name: string, jsDoc: JSDoc }} InterfaceProperty
    * @typedef {{ properties: Array<InterfaceProperty> }} InterfaceDef
    * @typedef {{ name: string, interfaceDef: InterfaceDef }} InterfaceDocNode
@@ -39,17 +39,13 @@ async function main() {
   /** @type {Array<LintRule>} */
   const rules = [];
   for (const property of lintRulesNode.interfaceDef.properties) {
-    const descriptionTag = property.jsDoc.tags.find((tag) =>
-      tag.kind === "unsupported" && tag.value.startsWith("@description")
-    );
-    if (descriptionTag?.kind !== "unsupported") {
+    if (!property.jsDoc.doc) {
       throw new Error(
-        `"${property.name}" rule should have \`@description\` tag`,
+        `"${property.name}" rule should have a description`,
       );
     }
-    const description = stripPrefix(descriptionTag.value, "@description")
-      .trim();
 
+    const description = property.jsDoc.doc;
     const categoryTag = property.jsDoc.tags.find((tag) =>
       tag.kind === "category"
     );
@@ -105,18 +101,6 @@ function generateMarkdown(rules) {
 ${rules.map((rule) => `|\`${rule.name}\`|${rule.description}|`).join("\n")}`;
   });
   return `${header}\n\n${sections.join("\n\n")}`;
-}
-
-/**
- * @param {string} s
- * @param {string} prefix
- */
-function stripPrefix(s, prefix) {
-  if (s.startsWith(prefix)) {
-    return s.slice(prefix.length);
-  } else {
-    return s;
-  }
 }
 
 if (import.meta.main) {
