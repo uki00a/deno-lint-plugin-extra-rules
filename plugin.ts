@@ -1,41 +1,41 @@
 // NOTE: `@category` tag is recognized by `deno doc` (https://github.com/denoland/deno_doc/blob/0.169.0/js/types.d.ts#L236)
 /**
- * @description Lint rules provided by this plugin.
+ * Lint rules provided by this plugin.
  */
 export interface LintRules {
   /**
-   * @description Disallows disabling test sanitiziers
+   * Disallows disabling test sanitiziers
    * @category Deno, Testing
    */
   "require-test-sanitizers": Deno.lint.Rule;
 
   /**
-   * @description Disallows disabling tests
+   * Disallows disabling tests
    * @category Deno, Node.js, Testing, std
    * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest eslint-plugin-jest}.
    */
   "no-disabled-tests": Deno.lint.Rule;
 
   /**
-   * @description Disallows the use of `Deno.env.toObject()`
+   * Disallows the use of `Deno.env.toObject()`
    * @category Deno, Security
    */
   "no-env-to-object": Deno.lint.Rule;
 
   /**
-   * @description Disallows the use of `Deno.exit()`
+   * Disallows the use of `Deno.exit()`
    * @category Deno
    */
   "no-exit": Deno.lint.Rule;
 
   /**
-   * @description Encourages the use of `node:assert/strict` rather than `node:assert`
+   * Encourages the use of `node:assert/strict` rather than `node:assert`
    * @category Node.js, Testing
    */
   "prefer-node-assert-strict": Deno.lint.Rule;
 
   /**
-   * @description Disallows the use of invalid `expect()`
+   * Disallows the use of invalid `expect()`
    * @category std, Testing
    * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest eslint-plugin-jest}.
    */
