@@ -9,7 +9,8 @@
     "jsr:@std/fs@^1.0.9": "1.0.14",
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "jsr:@std/path@^1.0.8": "1.0.9",
-    "jsr:@std/testing@^1.0.9": "1.0.9"
+    "jsr:@std/testing@^1.0.9": "1.0.9",
+    "npm:@types/node@*": "22.13.1"
   },
   "jsr": {
     "@std/assert@1.0.11": {
@@ -53,6 +54,17 @@
         "jsr:@std/internal",
         "jsr:@std/path"
       ]
+    }
+  },
+  "npm": {
+    "@types/node@22.13.1": {
+      "integrity": "sha512-jK8uzQlrvXqEU91UxiK5J7pKHyzgnI1Qnl0QDHIgVGuolJhRb9EEl28Cj9b3rGR8B2lhFCtvIm5os8lFnO/1Ew==",
+      "dependencies": [
+        "undici-types"
+      ]
+    },
+    "undici-types@6.20.0": {
+      "integrity": "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="
     }
   },
   "workspace": {
