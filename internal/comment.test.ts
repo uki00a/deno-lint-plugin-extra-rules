@@ -4,7 +4,7 @@ import { parseLintIgnoreDirective } from "./comment.ts";
 
 interface TestCase {
   description: string;
-  given: Deno.lint.LineComment;
+  given: string;
   expected: LintIgnoreDirective | null;
 }
 
@@ -14,11 +14,7 @@ Deno.test("parseLintIgnoreDirective", async (t) => {
     const tc: TestCase of [
       {
         description: "A deno-lint-ignore directive with the reason",
-        given: {
-          type: "Line",
-          value: " deno-lint-ignore  no-console   -- This is valid.",
-          range: dummyRange,
-        },
+        given: " deno-lint-ignore  no-console   -- This is valid.",
         expected: {
           directive: "deno-lint-ignore",
           reason: "This is valid.",
@@ -27,12 +23,8 @@ Deno.test("parseLintIgnoreDirective", async (t) => {
       },
       {
         description: "A deno-lint-ignore-file directive with the reason",
-        given: {
-          type: "Line",
-          value:
-            " deno-lint-ignore-file no-console   no-unused-vars   --  This is also valid.  ",
-          range: dummyRange,
-        },
+        given:
+          " deno-lint-ignore-file no-console   no-unused-vars   --  This is also valid.  ",
         expected: {
           directive: "deno-lint-ignore-file",
           reason: "This is also valid.",
@@ -41,11 +33,7 @@ Deno.test("parseLintIgnoreDirective", async (t) => {
       },
       {
         description: "A deno-lint-ignore-file directive without rules",
-        given: {
-          type: "Line",
-          value: " deno-lint-ignore-file -- Disable all rules",
-          range: dummyRange,
-        },
+        given: " deno-lint-ignore-file -- Disable all rules",
         expected: {
           directive: "deno-lint-ignore-file",
           reason: "Disable all rules",
@@ -54,11 +42,7 @@ Deno.test("parseLintIgnoreDirective", async (t) => {
       },
       {
         description: "A deno-lint-ignore directive without rules",
-        given: {
-          type: "Line",
-          value: " deno-lint-ignore -- Disable all rules for the next line",
-          range: dummyRange,
-        },
+        given: " deno-lint-ignore -- Disable all rules for the next line",
         expected: {
           directive: "deno-lint-ignore",
           reason: "Disable all rules for the next line",
@@ -68,11 +52,7 @@ Deno.test("parseLintIgnoreDirective", async (t) => {
       {
         description:
           "A deno-lint-ignore directive without the reason and rules",
-        given: {
-          type: "Line",
-          value: " deno-lint-ignore    ",
-          range: dummyRange,
-        },
+        given: " deno-lint-ignore    ",
         expected: {
           directive: "deno-lint-ignore",
           reason: undefined,
@@ -81,17 +61,17 @@ Deno.test("parseLintIgnoreDirective", async (t) => {
       },
       {
         description: "An invalid directive",
-        given: {
-          type: "Line",
-          value: " deno-lint-ignorea no-console -- foo",
-          range: dummyRange,
-        },
+        given: " deno-lint-ignorea no-console -- foo",
         expected: null,
       },
     ]
   ) {
     await t.step(tc.description, () => {
-      const actual = parseLintIgnoreDirective(tc.given);
+      const actual = parseLintIgnoreDirective({
+        type: "Line",
+        value: tc.given,
+        range: dummyRange,
+      });
       assertEquals(actual, tc.expected);
     });
   }
