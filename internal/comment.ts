@@ -4,8 +4,6 @@ export interface LintIgnoreDirective {
   rules: Array<string>;
 }
 
-const kLintIgnoreDirective = "deno-lint-ignore";
-const kLintIgnoreFileDirective = "deno-lint-ignore-file";
 const kLintIgnoreDirectiveReasonSeparator = "--";
 
 export function parseLintIgnoreDirective(

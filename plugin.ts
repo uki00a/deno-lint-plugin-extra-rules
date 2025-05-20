@@ -175,8 +175,8 @@ export function createPlugin(): Deno.lint.Plugin {
       "no-deno-lint-ignore-wthout-reason": {
         create: (ctx) => {
           const visitor = {
-            Program: (program) => {
-              // TODO: Use `Program.comments`. Currently it seems that it is not reset with each file run.
+            Program: () => {
+              // TODO: Use `Deno.lint.Program.comments`. Currently it seems that it is not reset with each file run.
               for (const comment of ctx.sourceCode.getAllComments()) {
                 if (comment.type !== "Line") continue;
                 const maybeDirective = parseLintIgnoreDirective(comment);

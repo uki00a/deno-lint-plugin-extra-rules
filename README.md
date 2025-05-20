@@ -5,8 +5,9 @@
 
 A `deno lint` plugin for Deno's built-in APIs and
 [std](https://github.com/denoland/std). Heavily inspired by
-[eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n) and
-[eslint-plugin-jest](https://github.com/jest-community/eslint-plugin-jest).
+[eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n),
+[eslint-plugin-jest](https://github.com/jest-community/eslint-plugin-jest), and
+[eslint-plugin-eslint-comments](https://github.com/eslint-community/eslint-plugin-eslint-comments).
 
 ## Usage
 
