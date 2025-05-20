@@ -1,3 +1,8 @@
+import {
+  makeHintForLintIgnoreDirective,
+  parseLintIgnoreDirective,
+} from "./internal/comment.ts";
+
 // NOTE: `@category` tag is recognized by `deno doc` (https://github.com/denoland/deno_doc/blob/0.169.0/js/types.d.ts#L236)
 /**
  * Lint rules provided by this plugin.
@@ -8,6 +13,12 @@ export interface LintRules {
    * @category Deno, Testing
    */
   "require-test-sanitizers": Deno.lint.Rule;
+
+  /**
+   * Disallows disabling a lint rule without the reason
+   * @category Deno, Comment
+   */
+  "no-deno-lint-ignore-wthout-reason": Deno.lint.Rule;
 
   /**
    * Disallows disabling tests
@@ -157,6 +168,29 @@ export function createPlugin(): Deno.lint.Plugin {
                   });
                 }
               },
+          };
+          return visitor;
+        },
+      },
+      "no-deno-lint-ignore-wthout-reason": {
+        create: (ctx) => {
+          const visitor = {
+            Program: (program) => {
+              // TODO: Use `Program.comments`. Currently it seems that it is not reset with each file run.
+              for (const comment of ctx.sourceCode.getAllComments()) {
+                if (comment.type !== "Line") continue;
+                const maybeDirective = parseLintIgnoreDirective(comment);
+                if (maybeDirective == null) continue;
+                if (!maybeDirective.reason) {
+                  ctx.report({
+                    node: comment,
+                    message:
+                      `Requires the reason for \`${maybeDirective.directive}\` directive`,
+                    hint: makeHintForLintIgnoreDirective(maybeDirective),
+                  });
+                }
+              }
+            },
           };
           return visitor;
         },

@@ -4,12 +4,13 @@
 
 ### Deno
 
-|           Name            |                Description                 |
-| :-----------------------: | :----------------------------------------: |
-| `require-test-sanitizers` |    Disallows disabling test sanitiziers    |
-|    `no-disabled-tests`    |         Disallows disabling tests          |
-|    `no-env-to-object`     | Disallows the use of `Deno.env.toObject()` |
-|         `no-exit`         |     Disallows the use of `Deno.exit()`     |
+|                Name                 |                    Description                     |
+| :---------------------------------: | :------------------------------------------------: |
+|      `require-test-sanitizers`      |        Disallows disabling test sanitiziers        |
+| `no-deno-lint-ignore-wthout-reason` | Disallows disabling a lint rule without the reason |
+|         `no-disabled-tests`         |             Disallows disabling tests              |
+|         `no-env-to-object`          |     Disallows the use of `Deno.env.toObject()`     |
+|              `no-exit`              |         Disallows the use of `Deno.exit()`         |
 
 ### Testing
 
@@ -19,6 +20,12 @@
 |     `no-disabled-tests`     |                      Disallows disabling tests                       |
 | `prefer-node-assert-strict` | Encourages the use of `node:assert/strict` rather than `node:assert` |
 |       `valid-expect`        |               Disallows the use of invalid `expect()`                |
+
+### Comment
+
+|                Name                 |                    Description                     |
+| :---------------------------------: | :------------------------------------------------: |
+| `no-deno-lint-ignore-wthout-reason` | Disallows disabling a lint rule without the reason |
 
 ### Node.js
 
