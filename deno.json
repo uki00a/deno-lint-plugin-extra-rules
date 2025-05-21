@@ -6,10 +6,11 @@
   },
   "tasks": {
     "check": {
-      "dependencies": ["check:lint", "check:types"]
+      "dependencies": ["check:docs", "check:lint", "check:types"]
     },
     "check:lint": "deno fmt --check && deno lint --ignore=testdata",
     "check:types": "deno check mod.ts testdata tools",
+    "check:docs": "deno check --doc plugin.ts",
     "docs:rules": "deno run --allow-run=deno --allow-write=docs/rules.md tools/check-and-list-rules.js",
     "test": "deno test --allow-read=. ./tests",
     "test:e2e": {

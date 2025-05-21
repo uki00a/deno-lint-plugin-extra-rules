@@ -11,12 +11,50 @@ export interface LintRules {
   /**
    * Disallows disabling test sanitiziers
    * @category Deno, Testing
+   *
+   * @example
+   * 🙅‍♂️ Incorrect
+   * ```typescript
+   * Deno.test({
+   *   name: "Incorrect",
+   *   fn: async () => {
+   *     const file = await Deno.open("README.md");
+   *     // ...
+   *   },
+   *   sanitizeResources: false, // Invalid - the sanitizer should be enabled.
+   * });
+   * ```
+   *
+   * @example
+   * 🙆‍♂️ Correct
+   * ```typescript
+   * Deno.test({
+   *   name: "Correct",
+   *   fn: async () => {
+   *     using f = await Deno.open("README.md");
+   *     // ...
+   *   },
+   * });
+   * ````
    */
   "require-test-sanitizers": Deno.lint.Rule;
 
   /**
    * Disallows disabling a lint rule without the reason
    * @category Deno, Comment
+   *
+   * @example
+   * 🙅‍♂️ Incorrect
+   * ```typescript
+   * // deno-lint-ignore no-console
+   * console.info("foo");
+   * ```
+   * @example
+   * 🙆‍♂️ Correct
+   * ```typescript
+   * // deno-lint-ignore no-console -- Specify the reason.
+   * console.info("foo");
+   * ````
    */
   "no-deno-lint-ignore-wthout-reason": Deno.lint.Rule;
 
@@ -24,12 +62,42 @@ export interface LintRules {
    * Disallows disabling tests
    * @category Deno, Node.js, Testing, std
    * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest eslint-plugin-jest}.
+   *
+   * @example
+   * 🙅‍♂️ Incorrect
+   * ```typescript
+   * Deno.test.ignore("This test case is ignored.", () => {
+   *   // ...
+   * });
+   * ```
+   *
+   * @example
+   * 🙆‍♂️ Correct
+   * ```typescript
+   * Deno.test("This test case is not ignored.", () => {
+   *   // ...
+   * });
+   * ````
    */
   "no-disabled-tests": Deno.lint.Rule;
 
   /**
    * Disallows the use of `Deno.env.toObject()`
    * @category Deno, Security
+   *
+   * @example
+   * 🙅‍♂️ Incorrect
+   * ```typescript
+   * const env = Deno.env.toObject();
+   * env["DENO_DIR"];
+   * env["FOO"];
+   * ```
+   * @example
+   * 🙆‍♂️ Correct
+   * ```typescript
+   * Deno.env.get("DENO_DIR");
+   * Deno.env.get("FOO");
+   * ```
    */
   "no-env-to-object": Deno.lint.Rule;
 
@@ -42,6 +110,18 @@ export interface LintRules {
   /**
    * Encourages the use of `node:assert/strict` rather than `node:assert`
    * @category Node.js, Testing
+   *
+   * @example
+   * 🙅‍♂️ Incorrect
+   * ```typescript
+   * import assert from "node:assert";
+   * ```
+   *
+   * @example
+   * 🙆‍♂️ Correct
+   * ```typescript
+   * import assert from "node:assert/strict";
+   * ```
    */
   "prefer-node-assert-strict": Deno.lint.Rule;
 
@@ -49,6 +129,20 @@ export interface LintRules {
    * Disallows the use of invalid `expect()`
    * @category std, Testing
    * @see This rule was ported from {@link https://github.com/jest-community/eslint-plugin-jest eslint-plugin-jest}.
+   *
+   * @example
+   * 🙅‍♂️ Incorrect
+   * ```typescript
+   * import { expect } from "@std/expect";
+   * expect("foo").toStrictEqual; // Invalid - `toStrictEqual()` is not called.
+   * expect(1); // Invalid - A matcher is not called.
+   * ```
+   * @example
+   * 🙆‍♂️ Correct
+   * ```typescript
+   * import { expect } from "@std/expect";
+   * expect(1).toBe(1);
+   * ```
    */
   "valid-expect": Deno.lint.Rule;
 }
