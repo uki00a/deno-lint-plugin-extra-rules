@@ -24,4 +24,5 @@ Add the following to `deno.json`:
 
 ## Rules
 
-See [docs/rules.md](./docs/rules.md).
+See
+[`LintRules`](https://jsr.io/@uki00a/deno-lint-plugin-extra-rules/doc/~/LintRules).
