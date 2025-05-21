@@ -9,9 +9,9 @@ interface TestCase {
 }
 
 Deno.test("parseLintIgnoreDirective", async (t) => {
-  const dummyRange = [0, 0];
+  const dummyRange: [number, number] = [0, 0];
   for (
-    const tc: TestCase of [
+    const tc of [
       {
         description: "A deno-lint-ignore directive with the reason",
         given: " deno-lint-ignore  no-console   -- This is valid.",
@@ -64,7 +64,7 @@ Deno.test("parseLintIgnoreDirective", async (t) => {
         given: " deno-lint-ignorea no-console -- foo",
         expected: null,
       },
-    ]
+    ] satisfies Array<TestCase>
   ) {
     await t.step(tc.description, () => {
       const actual = parseLintIgnoreDirective({
