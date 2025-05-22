@@ -4,9 +4,9 @@ import { createPlugin } from "../plugin.ts";
 import type { TestCase } from "./shared.ts";
 import { runLintPlugin } from "./shared.ts";
 
-Deno.test("no-deno-lint-ignore-wthout-reason", async (t) => {
+Deno.test("no-deno-lint-ignore-without-reason", async (t) => {
   const plugin = createPlugin();
-  const id = "deno-lint-plugin-extra-rules/no-deno-lint-ignore-wthout-reason";
+  const id = "deno-lint-plugin-extra-rules/no-deno-lint-ignore-without-reason";
   const tests: Array<TestCase> = [
     {
       filename: "ng.js",
@@ -40,7 +40,7 @@ Deno.test("no-deno-lint-ignore-wthout-reason", async (t) => {
     await t.step(tc.filename, async () => {
       const diagnostics = await runLintPlugin(
         plugin,
-        `no-deno-lint-ignore-wthout-reason/${tc.filename}`,
+        `no-deno-lint-ignore-without-reason/${tc.filename}`,
       );
       for (let i = 0; i < tc.expected.length; i++) {
         assertObjectMatch(diagnostics[i], tc.expected[i]);
