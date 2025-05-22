@@ -4,13 +4,13 @@
 
 ### Deno
 
-|                Name                 |                    Description                     |
-| :---------------------------------: | :------------------------------------------------: |
-|      `require-test-sanitizers`      |        Disallows disabling test sanitiziers        |
-| `no-deno-lint-ignore-wthout-reason` | Disallows disabling a lint rule without the reason |
-|         `no-disabled-tests`         |             Disallows disabling tests              |
-|         `no-env-to-object`          |     Disallows the use of `Deno.env.toObject()`     |
-|              `no-exit`              |         Disallows the use of `Deno.exit()`         |
+|                 Name                 |                    Description                     |
+| :----------------------------------: | :------------------------------------------------: |
+|      `require-test-sanitizers`       |        Disallows disabling test sanitiziers        |
+| `no-deno-lint-ignore-without-reason` | Disallows disabling a lint rule without the reason |
+|         `no-disabled-tests`          |             Disallows disabling tests              |
+|          `no-env-to-object`          |     Disallows the use of `Deno.env.toObject()`     |
+|              `no-exit`               |         Disallows the use of `Deno.exit()`         |
 
 ### Testing
 
@@ -23,9 +23,9 @@
 
 ### Comment
 
-|                Name                 |                    Description                     |
-| :---------------------------------: | :------------------------------------------------: |
-| `no-deno-lint-ignore-wthout-reason` | Disallows disabling a lint rule without the reason |
+|                 Name                 |                    Description                     |
+| :----------------------------------: | :------------------------------------------------: |
+| `no-deno-lint-ignore-without-reason` | Disallows disabling a lint rule without the reason |
 
 ### Node.js
 

@@ -56,7 +56,7 @@ export interface LintRules {
    * console.info("foo");
    * ````
    */
-  "no-deno-lint-ignore-wthout-reason": Deno.lint.Rule;
+  "no-deno-lint-ignore-without-reason": Deno.lint.Rule;
 
   /**
    * Disallows disabling tests
@@ -266,7 +266,7 @@ export function createPlugin(): Deno.lint.Plugin {
           return visitor;
         },
       },
-      "no-deno-lint-ignore-wthout-reason": {
+      "no-deno-lint-ignore-without-reason": {
         create: (ctx) => {
           const visitor = {
             Program: () => {
