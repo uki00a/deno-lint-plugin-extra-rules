@@ -8,11 +8,20 @@ Deno.test("no-env-to-object", async (t) => {
   const plugin = createPlugin();
   const tests: Array<TestCase> = [
     {
-      filename: "ng.js",
+      filename: "deno-exit.js",
       expected: [
         {
           id: "deno-lint-plugin-extra-rules/no-exit",
           message: "`Deno.exit()` should be used sparingly.",
+        },
+      ],
+    },
+    {
+      filename: "process-exit.js",
+      expected: [
+        {
+          id: "deno-lint-plugin-extra-rules/no-exit",
+          message: "`process.exit()` should be used sparingly.",
         },
       ],
     },
