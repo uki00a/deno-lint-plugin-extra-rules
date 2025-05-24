@@ -102,8 +102,8 @@ export interface LintRules {
   "no-env-to-object": Deno.lint.Rule;
 
   /**
-   * Disallows the use of `Deno.exit()`
-   * @category Deno
+   * Disallows the use of `Deno.exit()` and `process.exit()`
+   * @category Deno, Node.js
    */
   "no-exit": Deno.lint.Rule;
 
@@ -404,6 +404,15 @@ export function createPlugin(): Deno.lint.Plugin {
                 ctx.report({
                   node,
                   message: "`Deno.exit()` should be used sparingly.",
+                });
+              },
+            "CallExpression.callee[type=MemberExpression][object.name=process][property.name=exit]":
+              (
+                node: Deno.lint.MemberExpression,
+              ) => {
+                ctx.report({
+                  node,
+                  message: "`process.exit()` should be used sparingly.",
                 });
               },
           };
