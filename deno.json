@@ -1,6 +1,6 @@
 {
   "name": "@uki00a/deno-lint-plugin-extra-rules",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "exports": {
     ".": "./mod.ts"
   },
