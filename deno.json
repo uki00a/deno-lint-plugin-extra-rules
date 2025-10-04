@@ -11,12 +11,21 @@
     "check:lint": "deno fmt --check && deno lint --ignore=testdata",
     "check:types": "deno check mod.ts testdata tools",
     "check:docs": "deno check --doc plugin.ts",
-    "docs:rules": "deno run --allow-run=deno --allow-write=docs/rules.md tools/check-and-list-rules.js",
-    "test": "deno test --allow-read=.",
+    "docs:rules": "deno run --permission-set=docs:rules tools/check-and-list-rules.js",
+    "test": "deno test --permission-set",
     "test:e2e": {
       "description": "Checks if `deno lint` fails as expected",
       "command": "! deno lint testdata"
     }
+  },
+  "permissions": {
+    "docs:rules": {
+      "run": ["deno"],
+      "write": ["docs/rules.md"]
+    }
+  },
+  "test": {
+    "permissions": { "read": ["."] }
   },
   "lint": {
     "rules": {
